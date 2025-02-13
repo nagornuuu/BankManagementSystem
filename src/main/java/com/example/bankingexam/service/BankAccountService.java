@@ -2,10 +2,12 @@ package com.example.bankingexam.service;
 
 import com.example.bankingexam.exception.InsufficientFundsException;
 import com.example.bankingexam.model.BankAccount;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class BankAccountService {
     private final Map<Long, BankAccount> accounts = new HashMap<>();
     private long currentId = 1;
