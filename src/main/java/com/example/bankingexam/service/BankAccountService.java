@@ -44,7 +44,7 @@ public class BankAccountService {
         account.setBalance(account.getBalance() + amount);
     }
 
-    public void withdraw(long accountId, double amount) throws InsufficientFundsException {
+    public void withdraw(long accountId, double amount) {
 
         // Implement logic here
         if (amount < 0) {
@@ -58,7 +58,7 @@ public class BankAccountService {
         }
 
         if (account.getBalance() < amount) {
-            throw new InsufficientFundsException("Insufficient funds");
+            throw new IllegalArgumentException("Insufficient funds");
         }
 
         account.setBalance(account.getBalance() - amount);
