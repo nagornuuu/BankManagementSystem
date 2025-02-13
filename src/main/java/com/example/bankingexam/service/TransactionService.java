@@ -20,21 +20,31 @@ public class TransactionService {
         this.bankAccountService = bankAccountService;
     }
 
+    /**
+     * Method which is responsible for recording the transaction of a specific bank account
+     * Validations:
+     * 1. Checks if amount to deposit/withdraw is more than 0
+     * 2. Checks if account exists or no
+     *
+     * @param accountId the id of an account to which transactions should be recorded
+     * @param amount the amount of money of to be deposited/withdraw
+     * @param type the type of transaction
+     */
     public void recordTransaction(long accountId, double amount, TransactionType type) {
 
-        // Implement logic here
-        if (amount < 0) {
-            throw new IllegalArgumentException("Amount must be greater than 0");
+        if (amount <= 0) {
+            throw new IllegalArgumentException("The amount must be greater than zero");
         }
 
         if (bankAccountService.getAccount(accountId) == null) {
-            throw new IllegalArgumentException("Account does not exist");
+            throw new NullPointerException("Account does not exist");
         }
 
         bankAccountService.getAccount(accountId);
-
         Transaction transaction = new Transaction(currentTransactionId++, accountId, amount, type, LocalDateTime.now());
 
+        // Retrieves the list of transactions for the special account
+        // if no transactions , create an empty list and adds it to the Map
         List<Transaction> accountTransactions = transactions.get(accountId);
         if (accountTransactions == null) {
             accountTransactions = new ArrayList<>();
@@ -45,17 +55,23 @@ public class TransactionService {
 
     }
 
+    /**
+     * The method which shows the list of transactions of special account
+     *
+     * @param accountId the id of an account from which we can take transactions
+     * @return the list of transactions for special account
+     */
     public List<Transaction> getTransactionsForAccount(long accountId) {
 
-        // Implement logic here
         List<Transaction> accountTransactions = transactions.get(accountId);
 
         if (accountTransactions == null || accountTransactions.isEmpty()) {
             return new ArrayList<>();
         }
 
+        // sorting the transactions by timestamp
         accountTransactions.sort((t1, t2 ) -> t1.getTimestamp().compareTo(t2.getTimestamp()));
-        return accountTransactions; // Temporary return, you should replace it with the appropriate value according to the method's logic.
+        return accountTransactions;
 
     }
 }

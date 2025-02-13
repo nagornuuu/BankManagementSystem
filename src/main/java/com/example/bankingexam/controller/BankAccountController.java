@@ -10,46 +10,80 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
+/**
+ * Rest Controller for managing bank accounts related operations
+ */
 @RestController
 @RequestMapping("/accounts")
 public class BankAccountController {
 
+    /** Service layer to handle logic for banking account*/
     @Autowired
     private final BankAccountService accountService;
 
+    /**
+     * Default constructor
+     */
     public BankAccountController() {
         this(null);
     }
 
+    /**
+     * Constructor for account service
+     *
+     * @param accountService the service handling account operations
+     */
     public BankAccountController(BankAccountService accountService) {
         this.accountService = accountService;
     }
 
-    // Annotation with ("/create") url
+    /**
+     * Method for creating an account for bank
+     *
+     * @param accountHolder the name of the owner of an account
+     * @param initialBalance the balance which will be on an account
+     * @return a created account object
+     */
     @PostMapping("/create")
     public BankAccount createAccount(@RequestParam String accountHolder, @RequestParam double initialBalance) {
-        // Implement logic here
-        return accountService.createAccount(accountHolder, initialBalance); // Temporary return, you should replace it with the appropriate value according to the method's logic.
+
+        return accountService.createAccount(accountHolder, initialBalance);
+
     }
 
-    // Annotation with ("/{id}") url
+    /**
+     * Method for getting account by id
+     *
+     * @param id the id of an account to be found
+     * @return an object of account with specified id
+     */
     @GetMapping("/{id}")
     public BankAccount getAccount(@PathVariable long id) {
-        // Implement logic here
-        return accountService.getAccount(id); // Temporary return, you should replace it with the appropriate value according to the method's logic.
+
+        return accountService.getAccount(id);
     }
 
-    // Annotation with ("/deposit") url
+    /**
+     * Method for depositing money into an account
+     *
+     * @param request which contains the account id and amount to deposit
+     */
     @PostMapping("/deposit")
     public void deposit(@Valid @RequestBody DepositRequest request) {
-        // Implement logic here
+
         accountService.deposit(request.getAccountId(), request.getAmount());
+
     }
 
-    // Annotation with ("/withdraw") url
+    /**
+     * Method for withdrawing money from an account
+     *
+     * @param request which contains the account id and amount to withdraw
+     */
     @PostMapping("/withdraw")
     public void withdraw(@Valid @RequestBody WithdrawRequest request) throws InsufficientFundsException {
-        // Implement logic here
+
         accountService.withdraw(request.getAccountId(), request.getAmount());
+
     }
 }
