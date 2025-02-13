@@ -4,6 +4,7 @@ import com.example.bankingexam.model.Transaction;
 import com.example.bankingexam.model.TransactionType;
 import com.example.bankingexam.service.BankAccountService;
 import com.example.bankingexam.service.TransactionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,11 +15,11 @@ public class TransactionController {
     private final TransactionService transactionService;
     private final BankAccountService accountService;
 
-
     public TransactionController(BankAccountService accountService) {
         this(null, accountService);
     }
 
+    @Autowired
     public TransactionController(TransactionService transactionService, BankAccountService accountService) {
         this.transactionService = transactionService;
         this.accountService = accountService;
