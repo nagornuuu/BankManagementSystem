@@ -19,12 +19,37 @@ public class TransactionService {
     }
 
     public void recordTransaction(long accountId, double amount, TransactionType type) {
+
         // Implement logic here
+        if (amount < 0) {
+            throw new IllegalArgumentException("Amount must be greater than 0");
+        }
+
+        if (bankAccountService.getAccount(accountId) == null) {
+            throw new IllegalArgumentException("Account does not exist");
+        }
+
+        bankAccountService.getAccount(accountId);
+
+        Transaction transaction = new Transaction(currentTransactionId++, accountId, amount, type, LocalDateTime.now());
+
+        List<Transaction> accountTransactions = transactions.get(accountId);
+        if (accountTransactions == null) {
+            accountTransactions = new ArrayList<>();
+            transactions.put(accountId, accountTransactions);
+        }
+
+        accountTransactions.add(transaction);
+
     }
 
     public List<Transaction> getTransactionsForAccount(long accountId) {
+
         // Implement logic here
-        return null; // Temporary return, you should replace it with the appropriate value according to the method's logic.
+        List<Transaction> accountTransactions = transactions.getOrDefault(accountId, new ArrayList<>());
+        accountTransactions.sort((t1, t2 ) -> t1.getTimestamp().compareTo(t2.getTimestamp()));
+        return accountTransactions; // Temporary return, you should replace it with the appropriate value according to the method's logic.
+
     }
 
 
