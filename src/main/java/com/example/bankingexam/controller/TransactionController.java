@@ -25,22 +25,29 @@ public class TransactionController {
     }
 
     // Annotation with ("/record/deposit") url
+    @PostMapping("/record/deposit")
     public String recordDeposit(@RequestParam long accountId, @RequestParam double amount) {
         // Implement logic here
-        return null; // Temporary return, you should replace it with the appropriate value according to the method's logic.
+        accountService.deposit(accountId, amount);
+        transactionService.recordTransaction(accountId, amount, TransactionType.DEPOSIT);
+        return "Deposit was successful"; // Temporary return, you should replace it with the appropriate value according to the method's logic.
 
     }
 
     // Annotation with ("/record/withdraw") url
+    @PostMapping("/record/withdraw")
     public String recordWithdraw(@RequestParam long accountId, @RequestParam double amount) {
         // Implement logic here
-        return null; // Temporary return, you should replace it with the appropriate value according to the method's logic.
+        accountService.withdraw(accountId, amount);
+        transactionService.recordTransaction(accountId, amount, TransactionType.WITHDRAWAL);
+        return "Withdrawal was successful"; // Temporary return, you should replace it with the appropriate value according to the method's logic.
 
     }
 
     // Annotation with ("/{accountId}") url
+    @GetMapping("/{accountId}")
     public List<Transaction> getTransactions(@PathVariable long accountId) {
         // Implement logic here
-        return null; // Temporary return, you should replace it with the appropriate value according to the method's logic.
+        return transactionService.getTransactionsForAccount(accountId); // Temporary return, you should replace it with the appropriate value according to the method's logic.
     }
 }
